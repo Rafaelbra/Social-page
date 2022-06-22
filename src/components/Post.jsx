@@ -1,9 +1,24 @@
-import { format } from 'date-fns';
+
+import { useState } from 'react';
 import { Avatar } from './Avatar';
 import { Comment } from './Comment';
 import styles from './Post.module.css';
 
-export function Post ({ author, publishedAt }) {
+export function Post ({ author, content }) {
+
+    const [comments, setComments] = useState([
+        'Really cool post !!' 
+    ]);
+
+    function handleCreateNewContent () {
+        event.preventDefault()
+
+        const newCommentText = event.target.comment.value;
+
+        setComments([...comments, newCommentText]);
+
+        event.target.comment.value = '';
+    }
 
     return (
         <article className={styles.post}>
@@ -21,21 +36,20 @@ export function Post ({ author, publishedAt }) {
                 </time>
             </header>
             <div className={styles.content}>
-                <p>Fala galeraa 👋</p>
-
-                <p>Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀</p>
-                <p><a href=''>jane.design/doctorcare</a></p>
-                <p> 
-                  <a href=''>#novoprojeto </a>{' '}
-                  <a href=''>#nlw </a>{' '}
-                  <a href=''>#rocketseat </a>
-                </p>     
+                {content.map(line => {
+                    if (line.type == 'paragraph') {
+                        return <p>{line.content}</p>;
+                    } else if (line.type == 'link') {
+                        return <p><a href='#'>{line.content}</a></p>
+                    }
+                })} 
             </div>
 
-            <form className={styles.commentForm}>
+            <form onSubmit={handleCreateNewContent} className={styles.commentForm}>
                 <strong>Leave your feedback</strong>
 
                 <textarea 
+                  name='comment'
                   placeholder='Add a comment...'
                 />
 
@@ -45,9 +59,9 @@ export function Post ({ author, publishedAt }) {
             </form>
 
             <div className={styles.commentList}>
-              <Comment />
-              <Comment />
-              <Comment />
+              {comments.map(comment => {
+                  return <Comment content={comment} />
+              })}
             </div>
         </article>
     )
