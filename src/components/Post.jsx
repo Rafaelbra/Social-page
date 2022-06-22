@@ -10,14 +10,17 @@ export function Post ({ author, content }) {
         'Really cool post !!' 
     ]);
 
+    const [newCommentText, setNewCommentText] = useState ()
+
     function handleCreateNewContent () {
         event.preventDefault()
 
-        const newCommentText = event.target.comment.value;
-
         setComments([...comments, newCommentText]);
+        setNewCommentText('');
+    }
 
-        event.target.comment.value = '';
+    function handleNewCommentChange () {
+        setNewCommentText(event.target.value);
     }
 
     return (
@@ -51,6 +54,8 @@ export function Post ({ author, content }) {
                 <textarea 
                   name='comment'
                   placeholder='Add a comment...'
+                  value={newCommentText}
+                  onChange={handleNewCommentChange}
                 />
 
                 <footer>
