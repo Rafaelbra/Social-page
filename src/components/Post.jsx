@@ -64,6 +64,7 @@ export function Post ({ author, content }) {
                   placeholder='Add a comment...'
                   value={newCommentText}
                   onChange={handleNewCommentChange}
+                  required={true}
                 />
 
                 <footer>
